@@ -1,0 +1,10 @@
+D:\CodeWatch\Test\RWtest\RWtest\bin\Debug\RWtest.exe.config
+D:\CodeWatch\Test\RWtest\RWtest\bin\Debug\RWtest.exe
+D:\CodeWatch\Test\RWtest\RWtest\bin\Debug\RWtest.pdb
+D:\CodeWatch\Test\RWtest\RWtest\obj\Debug\RWtest.csproj.AssemblyReference.cache
+D:\CodeWatch\Test\RWtest\RWtest\obj\Debug\RWtest.csproj.CoreCompileInputs.cache
+D:\CodeWatch\Test\RWtest\RWtest\obj\Debug\RWtest.exe
+D:\CodeWatch\Test\RWtest\RWtest\obj\Debug\RWtest.pdb
+D:\CodeWatch\Test\RWtest\RWtest\bin\Debug\Newtonsoft.Json.dll
+D:\CodeWatch\Test\RWtest\RWtest\bin\Debug\Newtonsoft.Json.xml
+D:\CodeWatch\Test\RWtest\RWtest\obj\Debug\RWtest.csproj.CopyComplete
