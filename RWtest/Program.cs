@@ -10,7 +10,7 @@ namespace RWtest
     {
         static void Main(string[] args)
         {
-            RWconfig.ReadConfig();
+           RWconfig.ReadConfig();
            // RWconfig.WriteConfig();
         }
     }

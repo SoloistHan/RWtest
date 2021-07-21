@@ -3,32 +3,79 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace RWtest
 {
+    class ConfigRW
+    {
+        public string key01 { get; set; }
+        public string key02 { get; set; }
+        public string key03 { get; set; }
+        public string key04 { get; set; }
+        public string key05 { get; set; }
+    }
 
     class RWconfig
     {
         public static string configPath = @"D:\TEST\Config.txt";
-        static Dictionary<string, string> dic_writeTest = new Dictionary<string, string>();
+        static Dictionary<string, string> dic_WriteTest = new Dictionary<string, string>();
+        static Dictionary<string, string> dic_ReadTest = new Dictionary<string, string>();
+        static  ConfigRW Crw = new ConfigRW();
+        public static void reload()
+        {
+            dic_WriteTest.Add("key01", "123");
+            dic_WriteTest.Add("key02", "456");
+            dic_WriteTest.Add("key03", "789");
+            dic_WriteTest.Add("key04", "000");
+            dic_WriteTest.Add("key05", "ABCDEFGHIJK");            
+            
+            Crw.key01 = "ABC";
+            Crw.key02 = "DDD";
+            Crw.key03 = "EFG";
+            Crw.key04 = "HHH";
+            Crw.key05 = "12345678";
+        }
         public static void ReadConfig()
+        {
+            r_XmlWay();
+            //r_ConfigWay();
+        }    
+        public static void WriteConfig()
+        {
+            reload();
+            w_XmlWay();
+            //w_ConfigWay();
+        }
+
+        //--------------------------------------------------This it --------------------------------------------------
+        private static void r_XmlWay()
+        {
+            XElement rootElement = XElement.Load(configPath);
+            foreach (var el in rootElement.Elements())
+            {
+                dic_ReadTest.Add(el.Name.LocalName, el.Value);
+            }
+        }
+        private static void w_XmlWay()
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            XElement xET_Write = new XElement("root",   dic_WriteTest.Select(kv => new XElement(kv.Key, kv.Value)));
+            xET_Write.Save(configPath, SaveOptions.None);
+        }
+        //-------------------------------------------------------------------------------------------------------
+
+
+        private static void r_ConfigWay()
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-            string SSS = config.AppSettings.Settings["key01"].Value;
-            //if (config.AppSettings.Settings["key01"] == null)
-            //    return "";
-            //else
-            //    return config.AppSettings.Settings["key01"].Value;
-
+            string SSS = config.AppSettings.Settings["key01"].Value;        
         }
-
-       
-
-        public static void WriteConfig()
+        private static void w_ConfigWay()
         {
-            //增加的內容寫在appSettings段下 <add key="RegCode" value="0"/>  
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (config.AppSettings.Settings["key01"] == null)
             {
@@ -40,54 +87,9 @@ namespace RWtest
             }
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");//重新載入新的配置檔案  
-
-
-
-            //ExeConfigurationFileMap file = new ExeConfigurationFileMap();
-            //file.ExeConfigFilename = @"D:\TEST\test.config";
-            //Configuration config = ConfigurationManager.OpenMappedExeConfiguration(file, ConfigurationUserLevel.None);
-
-            //ConfigSectionData data = new ConfigSectionData();
-            //data.Id = 1000;
-            //data.Time = DateTime.Now;
-
-            //config.SectionGroups.Add("group1", new ConfigurationSectionGroup());
-            //config.SectionGroups["group1"].Sections.Add("add", data);
-
-            //config.Save(ConfigurationSaveMode.Minimal);
-
-
-            //dic_writeTest.Add("First", "One_" + DateTime.Now.ToString("G"));
-            //dic_writeTest.Add("Second", "Two_" + DateTime.Now.ToString("F"));
-            //dic_writeTest.Add("Third", "Three_" + DateTime.Now.ToString("T"));
-            //string str_GetJson = JsonConvert.SerializeObject(dic_writeTest).Replace(",", "\r");
-
-            //using (StreamWriter sw = new StreamWriter(configPath))
-            //{
-            //    sw.Write(str_GetJson);
-            //    sw.Dispose();
-            //}
-            //for(int item = 0; item < dic_writeTest.Count; item++ )
-            //{         
-            //}
-
         }
 
-        class ConfigSectionData : ConfigurationSection
-        {
-            [ConfigurationProperty("id")]
-            public int Id
-            {
-                get { return (int)this["id"]; }
-                set { this["id"] = value; }
-            }
 
-            [ConfigurationProperty("time")]
-            public DateTime Time
-            {
-                get { return (DateTime)this["time"]; }
-                set { this["time"] = value; }
-            }
-        }
+
     }
 }
